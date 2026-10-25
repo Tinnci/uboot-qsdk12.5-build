@@ -1,0 +1,10 @@
+FROM --platform=linux/amd64 ubuntu:24.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential device-tree-compiler python3 perl coreutils git zip tar \
+    nodejs npm libio-compress-perl libssl-dev file ca-certificates \
+    && npm install -g html-minifier-terser@7.2.0 clean-css-cli@5.6.3 terser@5.44.0 \
+    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends bc \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /work
