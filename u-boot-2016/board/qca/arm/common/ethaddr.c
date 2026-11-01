@@ -12,6 +12,7 @@
  */
 
 #include <common.h>
+#include <ax5_board_policy.h>
 #include <asm/errno.h>
 #include <nand.h>
 #include <part.h>
@@ -155,6 +156,8 @@ int get_eth_mac_address(uchar *enetaddr, uint no_of_macs)
 			printf("ART partition read failed..\n");
 #endif
 	}
+	if (ret == 1 && ax5_complete_primary_mac(enetaddr, no_of_macs))
+		puts("AX5 primary MAC: existing environment (ART unchanged)\n");
 	return ret;
 }
 

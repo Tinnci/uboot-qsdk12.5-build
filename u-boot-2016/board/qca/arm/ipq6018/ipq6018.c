@@ -12,6 +12,7 @@
  */
 
 #include <common.h>
+#include <ax5_board_policy.h>
 #include <asm/global_data.h>
 #include <asm/io.h>
 #include <asm/errno.h>
@@ -269,6 +270,11 @@ void board_nand_init(void)
 #ifdef CONFIG_QCA_SPI
 	int gpio_node;
 #endif
+
+	if (ax5_skip_optional_flash(qca_smem_flash_info.flash_type == SMEM_BOOT_MMC_FLASH)) {
+		puts("AX5 eMMC-only: skipping NAND/SPI probes\n");
+		return;
+	}
 
 	qpic_nand_init(NULL);
 

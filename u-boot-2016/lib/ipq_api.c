@@ -19,6 +19,7 @@
  */
 
 #include <common.h>
+#include <ax5_board_policy.h>
 #include <cli.h>
 #include <errno.h>
 #include <ipq_api.h>
@@ -303,7 +304,9 @@ void detect_flash_device(void)
 	dfd->nand = false;
 	dfd->mmc = false;
 
-	spi = spi_flash_probe(CONFIG_SF_DEFAULT_BUS, CONFIG_SF_DEFAULT_CS,
+	spi = NULL;
+	if (!ax5_skip_optional_flash(qca_smem_flash_info.flash_type == SMEM_BOOT_MMC_FLASH))
+		spi = spi_flash_probe(CONFIG_SF_DEFAULT_BUS, CONFIG_SF_DEFAULT_CS,
 			CONFIG_SF_DEFAULT_SPEED, CONFIG_SF_DEFAULT_MODE);
 	if (spi && spi->size > 0) {
 		len += strlcpy(flash_list + len, "SPI", sizeof(flash_list));
